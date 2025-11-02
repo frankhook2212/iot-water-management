@@ -1,4 +1,4 @@
-const CHANNEL_ID = "YOUR_CHANNEL_ID";
+const CHANNEL_ID = "3106054";
 const API_URL = `https://api.thingspeak.com/channels/${CHANNEL_ID}/feeds.json?results=1`;
 
 async function fetchData() {

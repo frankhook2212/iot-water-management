@@ -15,29 +15,34 @@
     <p id="errorMsg"></p>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
-  <script src="firebase-config.js"></script>
-  <script>
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+  <!-- Firebase SDKs (v8.10.0 – compatible with HTML scripts) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="firebase-config.js"></script>
 
-    document.getElementById("loginBtn").addEventListener("click", () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+<script>
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
 
-      auth.signInWithEmailAndPassword(email, password)
-        .then(user => {
-          if (email === "admin@example.com") {
-            window.location.href = "admin.html";
-          } else {
-            window.location.href = "dashboard.html";
-          }
-        })
-        .catch(error => {
-          document.getElementById("errorMsg").innerText = error.message;
-        });
-    });
-  </script>
+  document.getElementById("loginBtn").addEventListener("click", () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(userCredential => {
+        const user = userCredential.user;
+        if (email === "admin@iot.com") {
+          window.location.href = "admin.html";
+        } else {
+          window.location.href = "dashboard.html";
+        }
+      })
+      .catch(error => {
+        alert(error.message);
+      });
+  });
+</script>
+
 </body>
 </html>
