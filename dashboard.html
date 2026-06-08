@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Dashboard</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>User Dashboard</h1>
-  <div class="data-box">
-    <h2>Temperature</h2>
-    <p id="temp">-- °C</p>
-  </div>
-  <div class="data-box">
-    <h2>Humidity</h2>
-    <p id="humidity">-- %</p>
-  </div>
-  <div class="data-box">
-    <h2>TDS</h2>
-    <p id="tds">-- ppm</p>
-  </div>
-  <button id="refresh">🔄 Refresh</button>
+<h1>Water Quality Dashboard</h1>
 
-  <script src="script.js"></script>
+<div class="grid">
+  <div class="data-box"><h2>Temperature</h2><p id="temp">-- °C</p></div>
+  <div class="data-box"><h2>Humidity</h2><p id="humidity">-- %</p></div>
+  <div class="data-box"><h2>TDS</h2><p id="tds">-- ppm</p></div>
+  <div class="data-box"><h2>Fish Safety</h2><p id="safety">--</p></div>
+</div>
+
+<div class="data-box" style="max-width:900px;margin:20px auto;text-align:left;">
+<h2>Recommendations</h2>
+<p id="recommendation">Loading...</p>
+</div>
+
+<button id="refresh">🔄 Refresh</button>
+<script src="script.js"></script>
 </body>
 </html>
