@@ -9,10 +9,69 @@
 <body>
   <h1>Admin Dashboard</h1>
   <p>Welcome, Admin!</p>
+
+  <div class="grid">
+    <div class="data-box">
+      <h2>Water Quality Status</h2>
+      <p id="qualityStatus">Loading...</p>
+    </div>
+
+    <div class="data-box">
+      <h2>Aquaculture Score</h2>
+      <p id="healthScore">--/100</p>
+    </div>
+
+    <div class="data-box">
+      <h2>Fish Safety</h2>
+      <p id="fishSafety">Checking...</p>
+    </div>
+
+    <div class="data-box">
+      <h2>Last Updated</h2>
+      <p id="lastUpdated">--</p>
+    </div>
+  </div>
+
+  <div class="data-box" style="max-width:1000px;margin:20px auto;text-align:left;">
+    <h2>AI Water Assessment</h2>
+    <p id="assessment">Analyzing water quality...</p>
+  </div>
+
   <div class="charts">
     <iframe width="450" height="260" src="https://thingspeak.com/channels/3106054/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true"></iframe>
     <iframe width="450" height="260" src="https://thingspeak.com/channels/3106054/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true"></iframe>
     <iframe width="450" height="260" src="https://thingspeak.com/channels/3106054/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true"></iframe>
   </div>
+
+<script>
+async function loadSummary(){
+  try{
+    const res = await fetch("https://api.thingspeak.com/channels/3106054/feeds.json?results=1");
+    const data = await res.json();
+    const feed = data.feeds[0];
+
+    const temp = Number(feed.field1);
+    const humidity = Number(feed.field2);
+    const tds = Number(feed.field3);
+
+    let score = 100;
+    if(temp < 20 || temp > 30) score -= 20;
+    if(tds > 500) score -= 30;
+
+    let status = score >= 80 ? "🟢 GOOD" : score >= 60 ? "🟡 MODERATE" : "🔴 POOR";
+    let fish = tds <= 500 ? "🟢 Safe" : "🔴 Risk";
+    let assessment = tds <= 500 && temp >= 20 && temp <= 30
+      ? "Current water quality is suitable for most freshwater aquaculture operations."
+      : "Water parameters need attention. Consider filtration or partial water replacement.";
+
+    document.getElementById("qualityStatus").innerText = status;
+    document.getElementById("healthScore").innerText = score + "/100";
+    document.getElementById("fishSafety").innerText = fish;
+    document.getElementById("assessment").innerText = assessment;
+    document.getElementById("lastUpdated").innerText = new Date().toLocaleString();
+  }catch(e){ console.error(e); }
+}
+loadSummary();
+</script>
 </body>
 </html>
