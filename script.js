@@ -7,13 +7,44 @@ async function fetchData() {
     const data = await response.json();
     const feed = data.feeds[0];
 
-    document.getElementById("temp").innerText = feed.field1 + " °C";
-    document.getElementById("humidity").innerText = feed.field2 + " %";
-    document.getElementById("tds").innerText = feed.field3 + " ppm";
+    const temp = Number(feed.field1);
+    const humidity = Number(feed.field2);
+    const tds = Number(feed.field3);
+
+    // Display values
+    document.getElementById("temp").innerText = temp + " °C";
+    document.getElementById("humidity").innerText = humidity + " %";
+    document.getElementById("tds").innerText = tds + " ppm";
+
+    // Fish safety assessment
+    const safe = tds <= 500 && temp >= 20 && temp <= 30;
+
+    const safetyElement = document.getElementById("safety");
+    if (safetyElement) {
+      safetyElement.innerText = safe ? "🟢 Safe" : "🔴 Attention";
+    }
+
+    // Recommendations
+    const recommendationElement =
+      document.getElementById("recommendation");
+
+    if (recommendationElement) {
+      recommendationElement.innerText = safe
+        ? "Water quality is suitable for aquaculture. Continue normal operation."
+        : "Check filtration system and consider partial water replacement.";
+    }
+
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 }
 
-document.getElementById("refresh").addEventListener("click", fetchData);
+// Refresh button support
+const refreshBtn = document.getElementById("refresh");
+
+if (refreshBtn) {
+  refreshBtn.addEventListener("click", fetchData);
+}
+
+// Initial load
 fetchData();
